@@ -8,7 +8,6 @@ using SimpleCrudServer.Entities;
 namespace SimpleCrudServer.Controllers
 {
     [Route("api/[controller]")]
-    [Produces("application/json")]
     public class ValuesController : Controller
     {
         // GET api/values
