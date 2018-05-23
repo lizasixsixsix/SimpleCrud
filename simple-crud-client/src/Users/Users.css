@@ -1,6 +1,9 @@
-.Users {
-  margin: 10px;
-  padding: 10px;
+.Users-layout {
+  display: table-row;
+}
+
+.Users-block {
+  display: table-cell;
   padding-left: 40px;
 }
 

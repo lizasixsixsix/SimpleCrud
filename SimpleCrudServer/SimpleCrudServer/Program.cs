@@ -15,8 +15,6 @@ namespace SimpleCrudServer
     {
         public static void Main(string[] args)
         {
-            Directory.SetCurrentDirectory(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location));
-
             BuildWebHost(args).Run();
         }
 

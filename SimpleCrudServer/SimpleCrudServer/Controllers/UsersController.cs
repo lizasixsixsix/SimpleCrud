@@ -26,5 +26,14 @@ namespace SimpleCrudServer.Controllers
         {
             return repo.GetUsers().Select(u => Mapper.Map<User>(u));
         }
+
+        // POST api/users
+        [HttpPost]
+        public async Task<IActionResult> Post([FromBody]User user)
+        {
+            await repo.AddUserAsync(user);
+
+            return Ok(user);
+        }
     }
 }

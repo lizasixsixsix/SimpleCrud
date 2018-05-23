@@ -30,7 +30,7 @@ namespace SimpleCrudServer
         {
             services.AddMvc();
 
-            services.AddScoped<IRepo>(provider => new Repo());
+            services.AddScoped<IRepo>(provider => new Repo(@"..\FakeRepo\Data\FakeData.json"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
