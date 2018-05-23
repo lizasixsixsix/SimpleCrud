@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2018
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleCrudServer", "SimpleCrudServer\SimpleCrudServer.csproj", "{7D43838E-26AA-4B67-8811-0FF5ED70C3ED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleCrudServer", "SimpleCrudServer\SimpleCrudServer.csproj", "{7D43838E-26AA-4B67-8811-0FF5ED70C3ED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{61C7EC52-A795-445A-9EC6-A7CE1C4F2853}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeRepo", "FakeRepo\FakeRepo.csproj", "{7C9E30BA-3D5D-4BC3-B4D0-19CE4264BA64}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{7D43838E-26AA-4B67-8811-0FF5ED70C3ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7D43838E-26AA-4B67-8811-0FF5ED70C3ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7D43838E-26AA-4B67-8811-0FF5ED70C3ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61C7EC52-A795-445A-9EC6-A7CE1C4F2853}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61C7EC52-A795-445A-9EC6-A7CE1C4F2853}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61C7EC52-A795-445A-9EC6-A7CE1C4F2853}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61C7EC52-A795-445A-9EC6-A7CE1C4F2853}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C9E30BA-3D5D-4BC3-B4D0-19CE4264BA64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C9E30BA-3D5D-4BC3-B4D0-19CE4264BA64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C9E30BA-3D5D-4BC3-B4D0-19CE4264BA64}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C9E30BA-3D5D-4BC3-B4D0-19CE4264BA64}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

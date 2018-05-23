@@ -19,7 +19,7 @@ class User extends Component {
   }
 }
 
-class UsersList extends Component {
+class Users extends Component {
   constructor(props) {
     super(props);
 
@@ -37,7 +37,7 @@ class UsersList extends Component {
   }
 
   render() {
-    return <div>
+    return <div className="Users">
       <h2 className="Users-header">Users List</h2>
 
       <div>
@@ -52,4 +52,4 @@ class UsersList extends Component {
   }
 }
 
-export default UsersList;
+export default Users;

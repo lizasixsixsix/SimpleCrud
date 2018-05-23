@@ -1,0 +1,20 @@
+﻿{
+  "users": [
+    {
+      "id": "0834452",
+      "firstName": "Catrin",
+      "lastName": "Striebeck",
+      "birthYear": "1966",
+      "country": "Austria",
+      "city": "Vienna"
+    },
+    {
+      "id": "0684728",
+      "firstName": "Jörg",
+      "lastName": "Pintsch",
+      "birthYear": "1965",
+      "country": "Germany",
+      "city": "Garmisch-Partenkirchen"
+    }
+  ]
+}

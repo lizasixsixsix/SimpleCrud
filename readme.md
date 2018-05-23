@@ -25,3 +25,11 @@ BE &mdash; ASP.NET Core 2.0 Web API
 *   How ASP.NET Core 2.0 Web API returns JSON implicitly
 
     *   [An In Depth Guide Into a Ridiculously Simple API Using .NET Core](https://medium.com/@pielegacy/an-in-depth-guide-into-a-ridiculously-simple-api-using-net-core-8f5edd427b0)
+
+*   `Proxy error: Could not proxy request`
+
+    *   https://github.com/facebook/create-react-app/issues/3823
+
+*   .NET Core working directory is project directory, not _bin_
+
+    *   https://github.com/dotnet/project-system/issues/2239

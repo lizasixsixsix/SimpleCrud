@@ -2,12 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using Common.Entities;
+using Common.Repos;
+using FakeRepo;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using SimpleCrudServer.Entities;
 
 namespace SimpleCrudServer
 {
@@ -24,6 +29,8 @@ namespace SimpleCrudServer
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+
+            services.AddScoped<IRepo>(provider => new Repo());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -35,6 +42,8 @@ namespace SimpleCrudServer
             }
 
             app.UseMvc();
+
+            Mapper.Initialize(cfg => cfg.CreateMap<BaseUser, User>());
         }
     }
 }
