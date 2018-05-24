@@ -22,9 +22,9 @@ namespace SimpleCrudServer.Controllers
 
         // GET api/users
         [HttpGet]
-        public IEnumerable<User> Get()
+        public async Task<IEnumerable<User>> Get()
         {
-            return repo.GetUsers().Select(u => Mapper.Map<User>(u));
+            return (await repo.GetUsersAsync()).Select(Mapper.Map<User>);
         }
 
         // POST api/users
@@ -34,6 +34,15 @@ namespace SimpleCrudServer.Controllers
             await repo.AddUserAsync(user);
 
             return Ok(user);
+        }
+
+        // DELETE api/users/1234567
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            await repo.DeleteUserAsync(id);
+
+            return Ok();
         }
     }
 }

@@ -1,14 +1,17 @@
 import React, { Component } from "react";
 import "./Users.css";
 
-const API = "api/";
-const QUERY = "users";
-
 class User extends Component {
   constructor(props) {
     super(props);
 
     this.state = { user: props.user };
+
+    this.onClick = this.onClick.bind(this);
+  }
+
+  onClick(e) {
+    this.props.onRemove(this.state.user);
   }
 
   render() {
@@ -20,6 +23,9 @@ class User extends Component {
         <p>
           {this.state.user.birthYear}&emsp;{this.state.user.city},{" "}
           {this.state.user.country}
+        </p>
+        <p>
+          <button onClick={this.onClick}>Remove</button>
         </p>
       </div>
     );
@@ -153,20 +159,21 @@ class Users extends Component {
     this.state = { users: [] };
 
     this.onAddUser = this.onAddUser.bind(this);
+    this.onRemoveUser = this.onRemoveUser.bind(this);
   }
 
   loadData() {
-    fetch(API + QUERY)
+    fetch(this.props.apiUrl)
       .then(response => response.json())
       .then(data => this.setState({ users: data }));
   }
 
   onAddUser(user) {
     if (user) {
-      fetch(API + QUERY, {
+      fetch(this.props.apiUrl, {
         method: "post",
         headers: {
-          "content-type": "application/json"
+          "Content-Type": "application/json"
         },
         body: JSON.stringify({
           firstName: user.firstName,
@@ -184,11 +191,28 @@ class Users extends Component {
     }
   }
 
+  onRemoveUser(user) {
+    if (user) {
+      fetch(`${this.props.apiUrl}/${user.id}`, {
+        method: "delete",
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+        .then(() =>
+          console.log(`User ${user.firstName} ${user.lastName} deleted.`)
+        )
+        .then(() => this.loadData());
+    }
+  }
+
   componentDidMount() {
     this.loadData();
   }
 
   render() {
+    let remove = this.onRemoveUser;
+
     return (
       <div className="Users-layout">
         <div className="Users-block">
@@ -196,7 +220,7 @@ class Users extends Component {
 
           <div>
             {this.state.users.map(function(user) {
-              return <User key={user.id} user={user} />;
+              return <User key={user.id} user={user} onRemove={remove} />;
             })}
           </div>
         </div>

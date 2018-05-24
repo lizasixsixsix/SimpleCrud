@@ -15,29 +15,45 @@ namespace FakeRepo
     {
         private readonly string dataFile;
 
+        static readonly object fileAccess = new object();
+
         public Repo(string dataFile)
         {
             this.dataFile = dataFile;
         }
 
-        public BaseUser GetUser(int id)
+        public async Task<BaseUser> GetUserAsync(int id)
         {
-            using (StreamReader reader = File.OpenText(dataFile))
+            return await Task.Run(() =>
             {
-                JObject o = (JObject)JToken.ReadFrom(new JsonTextReader(reader));
+                lock (fileAccess)
+                {
+                    using (StreamReader reader = File.OpenText(dataFile))
+                    {
+                        JObject o = (JObject)JToken.ReadFrom(new JsonTextReader(reader));
 
-                return o["users"].Select(u => u.ToObject<BaseUser>()).Single(uu => Int32.Parse(uu.Id) == id);
-            }
+                        return o["users"]
+                            .Single(u => Int32.Parse(u["id"].Value<string>()) == id)
+                            .ToObject<BaseUser>();
+                    }
+                }
+            });
         }
 
-        public IEnumerable<BaseUser> GetUsers()
+        public async Task<IEnumerable<BaseUser>> GetUsersAsync()
         {
-            using (StreamReader reader = File.OpenText(dataFile))
+            return await Task.Run(() =>
             {
-                JObject o = (JObject)JToken.ReadFrom(new JsonTextReader(reader));
+                lock (fileAccess)
+                {
+                    using (StreamReader reader = File.OpenText(dataFile))
+                    {
+                        JObject o = (JObject)JToken.ReadFrom(new JsonTextReader(reader));
 
-                return o["users"].Select(u => u.ToObject<BaseUser>());
-            }
+                        return o["users"].Select(u => u.ToObject<BaseUser>());
+                    }
+                }
+            });
         }
 
         public async Task AddUserAsync(BaseUser user)
@@ -48,27 +64,68 @@ namespace FakeRepo
 
             JObject u;
 
-            using (StreamReader reader = File.OpenText(dataFile))
+            await Task.Run(() =>
             {
-                o = (JObject)JToken.ReadFrom(new JsonTextReader(reader));
+                lock (fileAccess)
+                {
+                    using (StreamReader reader = File.OpenText(dataFile))
+                    {
+                        o = (JObject)JToken.ReadFrom(new JsonTextReader(reader));
 
-                users = (JArray)o["users"];
+                        users = (JArray)o["users"];
 
-                user.Id = DateTime.Now.ToString("fffffff");
+                        user.Id = DateTime.Now.ToString("fffffff");
 
-                u = JObject.FromObject(user);
-            }
+                        u = JObject.FromObject(user);
+                    }
 
-            using (StreamWriter writer = File.CreateText(dataFile))
+                    using (StreamWriter writer = File.CreateText(dataFile))
+                    {
+                        users.Add(u);
+
+                        o.WriteTo(new JsonTextWriter(writer)
+                        {
+                            Formatting = Formatting.Indented,
+                            Indentation = 2,
+                            IndentChar = ' '
+                        });
+                    }
+                }
+            });
+        }
+
+        public async Task DeleteUserAsync(int id)
+        {
+            JObject o;
+
+            JArray users;
+
+            await Task.Run(() =>
             {
-                await Task.Run(() => users.Add(u));
+                lock (fileAccess)
+                {
+                    using (StreamReader reader = File.OpenText(dataFile))
+                    {
+                        o = (JObject)JToken.ReadFrom(new JsonTextReader(reader));
 
-                o.WriteTo(new JsonTextWriter(writer) {
-                    Formatting = Formatting.Indented,
-                    Indentation = 2,
-                    IndentChar = ' '
-                });
-            }
+                        users = (JArray)o["users"];
+                    }
+
+                    using (StreamWriter writer = File.CreateText(dataFile))
+                    {
+                        users
+                            .Single(u => Int32.Parse(u["id"].Value<string>()) == id)
+                            .Remove();
+
+                        o.WriteTo(new JsonTextWriter(writer)
+                        {
+                            Formatting = Formatting.Indented,
+                            Indentation = 2,
+                            IndentChar = ' '
+                        });
+                    }
+                }
+            });
         }
     }
 }

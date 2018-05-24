@@ -5,6 +5,9 @@ import './index.css';
 import UsersList from './Users/Users';
 import registerServiceWorker from './registerServiceWorker';
 
+const API = "api/";
+const QUERY = "users";
+
 // ReactDOM.render(<App />, document.getElementById('root'));
-ReactDOM.render(<UsersList />, document.getElementById('users'));
+ReactDOM.render(<UsersList apiUrl={API + QUERY} />, document.getElementById('users'));
 registerServiceWorker();

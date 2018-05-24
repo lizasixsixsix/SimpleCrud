@@ -15,6 +15,14 @@
       "birthYear": "1965",
       "country": "Germany",
       "city": "Garmisch-Partenkirchen"
+    },
+    {
+      "id": "4913725",
+      "firstName": "Alexandra Maria",
+      "lastName": "Lara",
+      "birthYear": "1978",
+      "country": "Romania",
+      "city": "Bucharest"
     }
   ]
 }
