@@ -44,5 +44,19 @@ namespace SimpleCrudServer.Controllers
 
             return Ok();
         }
+
+        // PUT api/users/1234567
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put(int id, [FromBody]User user)
+        {
+            if (user == null)
+            {
+                return BadRequest();
+            }
+
+            await repo.UpdateUserAsync(id, user);
+
+            return Ok(user);
+        }
     }
 }

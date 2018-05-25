@@ -1,7 +1,7 @@
 {
   "users": [
     {
-      "id": "0834452",
+      "id": 834452,
       "firstName": "Catrin",
       "lastName": "Striebeck",
       "birthYear": "1966",
@@ -9,7 +9,7 @@
       "city": "Vienna"
     },
     {
-      "id": "0684728",
+      "id": 684728,
       "firstName": "Jörg",
       "lastName": "Pintsch",
       "birthYear": "1965",
@@ -17,7 +17,7 @@
       "city": "Garmisch-Partenkirchen"
     },
     {
-      "id": "4913725",
+      "id": 4913725,
       "firstName": "Alexandra Maria",
       "lastName": "Lara",
       "birthYear": "1978",

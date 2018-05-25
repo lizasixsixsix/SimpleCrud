@@ -5,27 +5,110 @@ class User extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { user: props.user };
+    this.state = {
+      user: props.user,
+      editable: false
+    };
 
-    this.onClick = this.onClick.bind(this);
+    this.onEditClick = this.onEditClick.bind(this);
+    this.onRemoveClick = this.onRemoveClick.bind(this);
   }
 
-  onClick(e) {
+  onEditClick(e) {
+    if (this.state.editable) {
+      let id = this.props.user.id;
+
+      let firstName = this.firstName.value;
+      let lastName = this.lastName.value;
+      let birthYear = this.birthYear.value;
+      let country = this.country.value;
+      let city = this.city.value;
+
+      let user = {
+        id: id,
+        firstName: firstName,
+        lastName: lastName,
+        birthYear: birthYear,
+        country: country,
+        city: city
+      };
+      this.props.onEdit(user);
+    }
+
+    this.setState({
+      editable: !this.state.editable
+    });
+  }
+
+  onRemoveClick(e) {
     this.props.onRemove(this.state.user);
   }
 
   render() {
+    let firstName = this.state.editable ? (
+      <input
+        type="text"
+        ref={input => (this.firstName = input)}
+        defaultValue={this.props.user.firstName}
+      />
+    ) : (
+      <a>{this.props.user.firstName}</a>
+    );
+
+    let lastName = this.state.editable ? (
+      <input
+        type="text"
+        ref={input => (this.lastName = input)}
+        defaultValue={this.props.user.lastName}
+      />
+    ) : (
+      <a>{this.props.user.lastName}</a>
+    );
+
+    let birthYear = this.state.editable ? (
+      <input
+        type="text"
+        ref={input => (this.birthYear = input)}
+        defaultValue={this.props.user.birthYear}
+      />
+    ) : (
+      <a>{this.props.user.birthYear}</a>
+    );
+
+    let country = this.state.editable ? (
+      <input
+        type="text"
+        ref={input => (this.country = input)}
+        defaultValue={this.props.user.country}
+      />
+    ) : (
+      <a>{this.props.user.country}</a>
+    );
+
+    let city = this.state.editable ? (
+      <input
+        type="text"
+        ref={input => (this.city = input)}
+        defaultValue={this.props.user.city}
+      />
+    ) : (
+      <a>{this.props.user.city}</a>
+    );
+
     return (
       <div>
         <p className="Users-name">
-          {this.state.user.firstName} {this.state.user.lastName}
+          {firstName} {lastName}
         </p>
         <p>
-          {this.state.user.birthYear}&emsp;{this.state.user.city},{" "}
-          {this.state.user.country}
+          {birthYear}&emsp;{city}, {country}
         </p>
         <p>
-          <button onClick={this.onClick}>Remove</button>
+          <button onClick={this.onEditClick}>
+            {this.state.editable ? "Submit" : "Edit"}
+          </button>
+          &emsp;
+          <button onClick={this.onRemoveClick}>Remove</button>
         </p>
       </div>
     );
@@ -159,19 +242,21 @@ class Users extends Component {
     this.state = { users: [] };
 
     this.onAddUser = this.onAddUser.bind(this);
+    this.onEditUser = this.onEditUser.bind(this);
     this.onRemoveUser = this.onRemoveUser.bind(this);
   }
 
   loadData() {
     fetch(this.props.apiUrl)
       .then(response => response.json())
-      .then(data => this.setState({ users: data }));
+      .then(data => this.setState({ users: data }))
+      .then(() => this.state.users.sort((a, b) => a.id < b.id));
   }
 
   onAddUser(user) {
     if (user) {
       fetch(this.props.apiUrl, {
-        method: "post",
+        method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
@@ -191,10 +276,33 @@ class Users extends Component {
     }
   }
 
+  onEditUser(user) {
+    if (user) {
+      fetch(`${this.props.apiUrl}/${user.id}`, {
+        method: "PUT",
+        body: JSON.stringify({
+          firstName: user.firstName,
+          lastName: user.lastName,
+          birthYear: user.birthYear,
+          country: user.country,
+          city: user.city
+        }),
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+        .then(response => response.json())
+        .then(data =>
+          console.log(`User ${data.firstName} ${data.lastName} updated.`)
+        )
+        .then(() => this.loadData());
+    }
+  }
+
   onRemoveUser(user) {
     if (user) {
       fetch(`${this.props.apiUrl}/${user.id}`, {
-        method: "delete",
+        method: "DELETE",
         headers: {
           "Content-Type": "application/json"
         }
@@ -211,6 +319,7 @@ class Users extends Component {
   }
 
   render() {
+    let edit = this.onEditUser;
     let remove = this.onRemoveUser;
 
     return (
@@ -220,7 +329,14 @@ class Users extends Component {
 
           <div>
             {this.state.users.map(function(user) {
-              return <User key={user.id} user={user} onRemove={remove} />;
+              return (
+                <User
+                  key={user.id}
+                  user={user}
+                  onEdit={edit}
+                  onRemove={remove}
+                />
+              );
             })}
           </div>
         </div>

@@ -33,7 +33,7 @@ namespace FakeRepo
                         JObject o = (JObject)JToken.ReadFrom(new JsonTextReader(reader));
 
                         return o["users"]
-                            .Single(u => Int32.Parse(u["id"].Value<string>()) == id)
+                            .Single(u => u["id"].Value<int>() == id)
                             .ToObject<BaseUser>();
                     }
                 }
@@ -74,7 +74,7 @@ namespace FakeRepo
 
                         users = (JArray)o["users"];
 
-                        user.Id = DateTime.Now.ToString("fffffff");
+                        user.Id = Int32.Parse(DateTime.Now.ToString("fffffff"));
 
                         u = JObject.FromObject(user);
                     }
@@ -114,8 +114,50 @@ namespace FakeRepo
                     using (StreamWriter writer = File.CreateText(dataFile))
                     {
                         users
-                            .Single(u => Int32.Parse(u["id"].Value<string>()) == id)
+                            .Single(u => u["id"].Value<int>() == id)
                             .Remove();
+
+                        o.WriteTo(new JsonTextWriter(writer)
+                        {
+                            Formatting = Formatting.Indented,
+                            Indentation = 2,
+                            IndentChar = ' '
+                        });
+                    }
+                }
+            });
+        }
+
+        public async Task UpdateUserAsync(int id, BaseUser user)
+        {
+            JObject o;
+
+            JArray users;
+
+            JObject u;
+
+            await Task.Run(() =>
+            {
+                lock (fileAccess)
+                {
+                    using (StreamReader reader = File.OpenText(dataFile))
+                    {
+                        o = (JObject)JToken.ReadFrom(new JsonTextReader(reader));
+
+                        users = (JArray)o["users"];
+                    }
+
+                    using (StreamWriter writer = File.CreateText(dataFile))
+                    {
+                        users
+                            .Single(uu => uu["id"].Value<int>() == id)
+                            .Remove();
+
+                        user.Id = id;
+
+                        u = JObject.FromObject(user);
+
+                        users.Add(u);
 
                         o.WriteTo(new JsonTextWriter(writer)
                         {

@@ -8,7 +8,7 @@ namespace Common.Entities
     public class BaseUser
     {
         [JsonProperty("id")]
-        public string Id { get; set; }
+        public int Id { get; set; }
 
         [JsonProperty("firstName")]
         public string FirstName { get; set; }

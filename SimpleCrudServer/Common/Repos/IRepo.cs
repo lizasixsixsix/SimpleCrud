@@ -15,5 +15,7 @@ namespace Common.Repos
         Task AddUserAsync(BaseUser user);
 
         Task DeleteUserAsync(int id);
+
+        Task UpdateUserAsync(int id, BaseUser user);
     }
 }
