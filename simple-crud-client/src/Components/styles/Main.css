@@ -1,0 +1,19 @@
+.Main-layout {
+  display: table-row;
+}
+
+.Main-block {
+  display: table-cell;
+  padding-top: 5px;
+  padding-left: 80px;
+}
+
+.Main-header {
+  color: steelblue;
+  margin-bottom: 40px;
+}
+
+.Main-name {
+  font-size: 1.2em;
+  font-weight: bolder;
+}

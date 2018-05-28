@@ -1,38 +1,15 @@
-import React, { Component } from "react";
-// import logo from "./logo.svg";
+import React from "react";
+
 import "./App.css";
 
-const API = "api/";
-const QUERY = "values";
+import Navigation from "./Components/Navigation";
+import Main from "./Components/Main";
 
-class App extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      values: []
-    };
-  }
-
-  componentDidMount() {
-    fetch(API + QUERY)
-      .then(response => response.json())
-      .then(data => this.setState({ values: data }));
-  }
-
-  render() {
-    const { values } = this.state;
-
-    return (
-      <div>
-      {values.map(value =>
-        <div key={value.value1}>
-          {value.value1} {value.value2}
-        </div>
-      )}
-    </div>
-    );
-  }
-}
+const App = props => (
+  <div className="App">
+    <Navigation apiUrl={props.apiUrl} />
+    <Main apiUrl={props.apiUrl} />
+  </div>
+);
 
 export default App;

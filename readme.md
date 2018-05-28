@@ -4,7 +4,7 @@
 
 ### Architecture
 
-FE &mdash; CRA
+FE &mdash; CRA SPA
 
 BE &mdash; ASP.NET Core 2.0 Web API
 
