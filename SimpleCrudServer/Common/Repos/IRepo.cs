@@ -8,14 +8,16 @@ namespace Common.Repos
 {
     public interface IRepo
     {
-        Task<BaseUser> GetUserAsync(int id);
+        Task<bool> UserExistsAsync(int id);
 
-        Task<IEnumerable<BaseUser>> GetUsersAsync();
+        Task<IUser> GetUserAsync(int id);
 
-        Task AddUserAsync(BaseUser user);
+        Task<IEnumerable<IUser>> GetUsersAsync();
+
+        Task AddUserAsync(IUser user);
 
         Task DeleteUserAsync(int id);
 
-        Task UpdateUserAsync(int id, BaseUser user);
+        Task UpdateUserAsync(int id, IUser user);
     }
 }

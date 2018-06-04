@@ -1,0 +1,11 @@
+﻿{
+  "db": {
+    "database": "",
+    "connstr": ""
+  },
+  "collections": {
+    "users": {
+      "name": ""
+    }
+  }
+}

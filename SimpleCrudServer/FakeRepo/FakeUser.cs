@@ -1,11 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿using Common.Entities;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Newtonsoft.Json;
 
-namespace Common.Entities
+namespace FakeRepo
 {
-    public class BaseUser
+    public class FakeUser : IUser
     {
         [JsonProperty("id")]
         public int Id { get; set; }

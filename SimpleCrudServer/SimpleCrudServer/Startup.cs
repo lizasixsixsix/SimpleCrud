@@ -12,7 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using SimpleCrudServer.Entities;
+using MongoRepo;
 
 namespace SimpleCrudServer
 {
@@ -30,7 +30,8 @@ namespace SimpleCrudServer
         {
             services.AddMvc();
 
-            services.AddScoped<IRepo>(provider => new Repo(@"..\FakeRepo\Data\FakeData.json"));
+            // services.AddScoped<IRepo>(provider => new Repo(@"..\FakeRepo\Data\FakeData.json"));
+            services.AddSingleton<IRepo>(provider => new MongoUsersRepo(new MongoContext()));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -42,8 +43,6 @@ namespace SimpleCrudServer
             }
 
             app.UseMvc();
-
-            Mapper.Initialize(cfg => cfg.CreateMap<BaseUser, User>());
         }
     }
 }

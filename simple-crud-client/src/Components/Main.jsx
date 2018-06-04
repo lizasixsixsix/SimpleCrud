@@ -52,6 +52,7 @@ class Main extends Component {
       fetch(`${this.props.apiUrl}/${user.id}`, {
         method: "PUT",
         body: JSON.stringify({
+          id: user.id,
           firstName: user.firstName,
           lastName: user.lastName,
           birthYear: user.birthYear,

@@ -22,7 +22,24 @@ namespace FakeRepo
             this.dataFile = dataFile;
         }
 
-        public async Task<BaseUser> GetUserAsync(int id)
+        public async Task<bool> UserExistsAsync(int id)
+        {
+            return await Task.Run(() =>
+            {
+                lock (fileAccess)
+                {
+                    using (StreamReader reader = File.OpenText(dataFile))
+                    {
+                        JObject o = (JObject)JToken.ReadFrom(new JsonTextReader(reader));
+
+                        return o["users"]
+                            .Any(u => u["id"].Value<int>() == id);
+                    }
+                }
+            });
+        }
+
+        public async Task<IUser> GetUserAsync(int id)
         {
             return await Task.Run(() =>
             {
@@ -34,13 +51,13 @@ namespace FakeRepo
 
                         return o["users"]
                             .Single(u => u["id"].Value<int>() == id)
-                            .ToObject<BaseUser>();
+                            .ToObject<FakeUser>();
                     }
                 }
             });
         }
 
-        public async Task<IEnumerable<BaseUser>> GetUsersAsync()
+        public async Task<IEnumerable<IUser>> GetUsersAsync()
         {
             return await Task.Run(() =>
             {
@@ -50,13 +67,13 @@ namespace FakeRepo
                     {
                         JObject o = (JObject)JToken.ReadFrom(new JsonTextReader(reader));
 
-                        return o["users"].Select(u => u.ToObject<BaseUser>());
+                        return o["users"].Select(u => u.ToObject<FakeUser>());
                     }
                 }
             });
         }
 
-        public async Task AddUserAsync(BaseUser user)
+        public async Task AddUserAsync(IUser user)
         {
             JObject o;
 
@@ -128,7 +145,7 @@ namespace FakeRepo
             });
         }
 
-        public async Task UpdateUserAsync(int id, BaseUser user)
+        public async Task UpdateUserAsync(int id, IUser user)
         {
             JObject o;
 

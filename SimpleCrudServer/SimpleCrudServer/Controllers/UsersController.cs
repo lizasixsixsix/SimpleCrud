@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Common.Entities;
 using Common.Repos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -13,25 +14,31 @@ namespace SimpleCrudServer.Controllers
     [Route("api/Users")]
     public class UsersController : Controller
     {
-        private readonly IRepo repo;
+        private readonly IRepo _repo;
+
+        private readonly IMapper _mapper;
 
         public UsersController(IRepo repo)
         {
-            this.repo = repo;
+            this._repo = repo;
+
+            this._mapper = new MapperConfiguration(
+                    cfg => cfg.CreateMap<IUser, User>())
+                .CreateMapper();
         }
 
         // GET api/users
         [HttpGet]
         public async Task<IEnumerable<User>> Get()
         {
-            return (await repo.GetUsersAsync()).Select(Mapper.Map<User>);
+            return (await _repo.GetUsersAsync()).Select(_mapper.Map<User>);
         }
 
         // POST api/users
         [HttpPost]
         public async Task<IActionResult> Post([FromBody]User user)
         {
-            await repo.AddUserAsync(user);
+            await _repo.AddUserAsync(user);
 
             return Ok(user);
         }
@@ -40,7 +47,7 @@ namespace SimpleCrudServer.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            await repo.DeleteUserAsync(id);
+            await _repo.DeleteUserAsync(id);
 
             return Ok();
         }
@@ -54,7 +61,7 @@ namespace SimpleCrudServer.Controllers
                 return BadRequest();
             }
 
-            await repo.UpdateUserAsync(id, user);
+            await _repo.UpdateUserAsync(id, user);
 
             return Ok(user);
         }

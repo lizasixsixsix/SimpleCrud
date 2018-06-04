@@ -5,6 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="dbsettings.json" />
+    <Content Remove="dbsettings.real.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
@@ -19,8 +24,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="dbsettings.real.json" />
+    <None Include="dbsettings.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj" />
     <ProjectReference Include="..\FakeRepo\FakeRepo.csproj" />
+    <ProjectReference Include="..\MongoRepo\MongoRepo.csproj" />
   </ItemGroup>
 
 </Project>
